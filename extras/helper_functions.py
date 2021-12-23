@@ -35,7 +35,7 @@ import numpy as np
 from sklearn.metrics import confusion_matrix
 
 # Our function needs a different name to sklearn's plot_confusion_matrix
-def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_size=15, norm=False, savefig=False): 
+def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_size=15, norm=False, savefig=False):
   """Makes a labelled confusion matrix comparing predictions and ground truth labels.
 
   If classes is passed, confusion matrix will be labelled, if not, integer class values
@@ -71,11 +71,7 @@ def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_s
   fig.colorbar(cax)
 
   # Are there a list of classes?
-  if classes:
-    labels = classes
-  else:
-    labels = np.arange(cm.shape[0])
-  
+  labels = classes or np.arange(cm.shape[0])
   # Label the axes
   ax.set(title="Confusion Matrix",
          xlabel="Predicted label",
@@ -84,7 +80,7 @@ def make_confusion_matrix(y_true, y_pred, classes=None, figsize=(10, 10), text_s
          yticks=np.arange(n_classes), 
          xticklabels=labels, # axes will labeled with class names (if they exist) or ints
          yticklabels=labels)
-  
+
   # Make x-axis labels appear on bottom
   ax.xaxis.set_label_position("bottom")
   ax.xaxis.tick_bottom()
@@ -281,8 +277,7 @@ def calculate_results(y_true, y_pred):
   model_accuracy = accuracy_score(y_true, y_pred) * 100
   # Calculate model precision, recall and f1 score using "weighted average
   model_precision, model_recall, model_f1, _ = precision_recall_fscore_support(y_true, y_pred, average="weighted")
-  model_results = {"accuracy": model_accuracy,
+  return {"accuracy": model_accuracy,
                   "precision": model_precision,
                   "recall": model_recall,
                   "f1": model_f1}
-  return model_results
